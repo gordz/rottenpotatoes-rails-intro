@@ -12,12 +12,10 @@ class MoviesController < ApplicationController
 
   def index
     orderBy = params[:orderBy] || session[:orderBy]
-    session[:orderBy] = orderBy;
-    puts "OrderBy: #{orderBy}"
-
     ratings = params[:ratings] || session[:ratings]
+
     session[:ratings] = ratings
-    puts "Ratings: #{ratings}"
+    session[:orderBy] = orderBy
 
     if ratings == nil || ratings == {}
       if orderBy != nil
@@ -40,6 +38,7 @@ class MoviesController < ApplicationController
     if ratings == nil
       ratings = {}
     end
+    @ratings = ratings
   end
 
   def new
