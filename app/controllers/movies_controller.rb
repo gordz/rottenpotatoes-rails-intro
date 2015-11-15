@@ -11,19 +11,31 @@ class MoviesController < ApplicationController
   end
 
   def index
-    orderBy = params[:orderBy]
-    ratings = params[:ratings]
+    orderBy = params[:orderBy] || session[:orderBy]
+    session[:orderBy] = orderBy;
+    puts "OrderBy: #{orderBy}"
 
-    if orderBy != nil
-      @movies = Movie.order(orderBy)
-    else
-      if ratings == nil || ratings == {}
-        @movies = Movie.all
+    ratings = params[:ratings] || session[:ratings]
+    session[:ratings] = ratings
+    puts "Ratings: #{ratings}"
+
+    if ratings == nil || ratings == {}
+      if orderBy != nil
+        @movies = Movie.order(orderBy)
       else
-        @selected_ratings = ratings
+        @movies = Movie.all
+      end
+    else
+      @selected_ratings = ratings
+      if orderBy != nil
+        @movies = Movie.where(rating: ratings.keys).order(orderBy)
+      else
         @movies = Movie.where(rating: ratings.keys)
       end
     end
+
+    @orderBy = orderBy
+
     @all_ratings = Movie.ratings
     if ratings == nil
       ratings = {}
