@@ -20,6 +20,7 @@ class MoviesController < ApplicationController
       if ratings == nil || ratings == {}
         @movies = Movie.all
       else
+        @selected_ratings = ratings
         @movies = Movie.where(rating: ratings.keys)
       end
     end
@@ -27,7 +28,6 @@ class MoviesController < ApplicationController
     if ratings == nil
       ratings = {}
     end
-    @selected_ratings = ratings
   end
 
   def new
