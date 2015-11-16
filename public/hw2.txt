@@ -1,0 +1,15 @@
+# Homework 2 - Rails Intro
+The assignment was a good introduction to Rails. There is a lot of 'magic' that happens with the convention over
+configuration approach, and it took some time and a bit of googling to get used to using the various helper methods,
+and how to pass various options to the helper methods. It isnt immediately obvious in some cases what magic the
+framework prodides, however after skimming the documentation this has become clearer.
+
+HAML is interesting - I'm not a fan of templating languages that detract from writing actual HTML, however I do
+understand the benefits in terms of the templates ending up less verbose, and limits interoperability with tools
+geared towards HTML editing. Although the syntax is fairly obvious, I feel
+there might be issues here when less technical people need to maintain these templates. I think approaches such as
+Handlebars templating are nicer, which maintain HTML syntax.
+
+
+
+
