@@ -11,11 +11,22 @@ class MoviesController < ApplicationController
   end
 
   def index
+    puts "params[:ratings]: #{params[:ratings]}"
+    puts "params[:orderBy]: #{params[:orderBy]}"
+    puts "session[:ratings]: #{session[:ratings]}"
+    puts "session[:orderBy]: #{session[:orderBy]}"
+
     orderBy = params[:orderBy] || session[:orderBy]
     ratings = params[:ratings] || session[:ratings]
 
     session[:ratings] = ratings
     session[:orderBy] = orderBy
+
+      #if (orderBy != nil && params[:orderBy] == nil) || (ratings != nil && params[:ratings] == nil)
+      #  puts "Preparing to redirect"
+     #   puts "merged hash: " + ({:orderBy => orderBy}.merge(ratings).keys.to_s)
+     #   redirect_to movies_path({:orderBy => orderBy}.merge(ratings))
+     # end
 
     if ratings == nil || ratings == {}
       if orderBy != nil
