@@ -16,40 +16,50 @@ class MoviesController < ApplicationController
     puts "session[:ratings]: #{session[:ratings]}"
     puts "session[:orderBy]: #{session[:orderBy]}"
 
-    orderBy = params[:orderBy] || session[:orderBy]
-    ratings = params[:ratings] || session[:ratings]
+    orderBy = params[:orderBy]
+    if orderBy != nil
+      session[:orderBy] = orderBy
+    end
 
-    session[:ratings] = ratings
-    session[:orderBy] = orderBy
+    ratings = params[:ratings]
+    if ratings != nil
+      session[:ratings] = ratings
+    end
 
-      #if (orderBy != nil && params[:orderBy] == nil) || (ratings != nil && params[:ratings] == nil)
-      #  puts "Preparing to redirect"
-     #   puts "merged hash: " + ({:orderBy => orderBy}.merge(ratings).keys.to_s)
-     #   redirect_to movies_path({:orderBy => orderBy}.merge(ratings))
-     # end
-
-    if ratings == nil || ratings == {}
-      if orderBy != nil
-        @movies = Movie.order(orderBy)
-      else
-        @movies = Movie.all
-      end
+    redirect_params = {}
+    if params[:orderBy] != session[:orderBy] || params[:ratings] != session[:ratings]
+      redirect_params = redirect_params.merge({:orderBy => session[:orderBy], :ratings => session[:ratings]})
+      redirect_to movies_path(redirect_params)
     else
-      @selected_ratings = ratings
-      if orderBy != nil
-        @movies = Movie.where(rating: ratings.keys).order(orderBy)
+        #if (orderBy != nil && params[:orderBy] == nil) || (ratings != nil && params[:ratings] == nil)
+        #  puts "Preparing to redirect"
+       #   puts "merged hash: " + ({:orderBy => orderBy}.merge(ratings).keys.to_s)
+       #   redirect_to movies_path({:orderBy => orderBy}.merge(ratings))
+       # end
+
+      if ratings == nil || ratings == {}
+        if orderBy != nil
+          @movies = Movie.order(orderBy)
+        else
+          @movies = Movie.all
+        end
       else
-        @movies = Movie.where(rating: ratings.keys)
+        @selected_ratings = ratings
+        if orderBy != nil
+          @movies = Movie.where(rating: ratings.keys).order(orderBy)
+        else
+          @movies = Movie.where(rating: ratings.keys)
+        end
       end
-    end
 
-    @orderBy = orderBy
+      @orderBy = orderBy
 
-    @all_ratings = Movie.ratings
-    if ratings == nil
-      ratings = {}
+      @all_ratings = Movie.ratings
+      if ratings == nil
+        ratings = {}
+      end
+      @ratings = ratings
     end
-    @ratings = ratings
   end
 
   def new
